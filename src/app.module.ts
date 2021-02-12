@@ -6,19 +6,32 @@ import { ConfigModule } from '@nestjs/config'
 import { ApplicationsModule } from './applications/applications.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
+import { applicationSchema } from './applications/applications.schema'
+// import { MongooseModule } from '@nestjs/mongoose'
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url:
-        `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@serverapplication.3azy9.mongodb.net/chat?authSource=admin&replicaSet=atlas-ef8dpp-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true`,
-      entities: [join(__dirname, '**/**.entity{.ts,.js}')],
-      synchronize: true,
-      useNewUrlParser: true,
-      logging: true,
-    }),
+    MongooseModule.forFeature([
+      {
+        name: 'Application',
+        schema: applicationSchema,
+        collection: 'stateApplication',
+        
+      },
+    ],'applications'),
+    MongooseModule.forRoot(
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@serverapplication.3azy9.mongodb.net/applications?retryWrites=true&w=majority`,
+      {
+        connectionName: 'applications'
+      }
+    ),
+    MongooseModule.forRoot(
+      `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@serverapplication.3azy9.mongodb.net/chat?retryWrites=true&w=majority`,
+      {
+        connectionName: 'chat'
+      }
+    ),
     ApplicationsModule,
   ],
   controllers: [AppController],
