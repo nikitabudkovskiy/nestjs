@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 import { applicationSchema } from './applications/applications.schema'
 // import { MongooseModule } from '@nestjs/mongoose'
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { applicationSchema } from './applications/applications.schema'
     ApplicationsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 
 export class AppModule {}
