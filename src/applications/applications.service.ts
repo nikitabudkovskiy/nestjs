@@ -13,7 +13,7 @@ export class ApplicationsService {
   }
 
   stateApplication = async (id: number) => {
-    return await this.applicationsRepository.find()
+    return await this.applicationsRepository.findOne({ id })
     //@ts-ignore
     // console.log(await this.applicationsRepository.find().exec())
     // //@ts-ignore
